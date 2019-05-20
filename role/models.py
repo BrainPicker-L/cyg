@@ -23,3 +23,6 @@ class Role(models.Model):
     wuhun = models.IntegerField("武魂",default=0)
     if20 = models.IntegerField("双十珍兽",default=0)
     cailiao_3 = models.IntegerField("三级材料",default=0)
+    shizhuang_num = models.IntegerField("时装数量",default=0)
+    area = models.CharField("区服", max_length=200, default='')
+    shenqi_star = models.IntegerField("神器星级",default=0)

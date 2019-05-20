@@ -4,10 +4,12 @@ from cygSpider.items import RoleItem
 import re
 import time
 from role.models import *
+
+import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&gem_level=3&gem_num=72&have_chosen=gem_level*3&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=700-2000&gem_level=4&gem_num=40&have_chosen=price*700-2000%20gem_level*4&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         for li in li_list:
@@ -22,7 +24,6 @@ class RoleinfoSpider(scrapy.Spider):
             )
         #翻页
         next_url = response.xpath("//div[@class='ui-pagination']/a[@class='after']/@href").extract_first()
-        print(next_url)
         if next_url != '':
             yield scrapy.Request(
                 next_url,
@@ -68,6 +69,14 @@ class RoleinfoSpider(scrapy.Spider):
         item["cailiao_3"] = mianbu + miyin
 
 
+        #时装数量统计
+        item['shizhuang_num'] = len(re.findall("可永久使用",html))
+
+        #所在区服
+        item['area'] = re.findall(r'所在区服：(.*?)&nbsp',html)[0]
+
+        #神器星级
+        item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
 
         item['name'] = response.xpath("//*[@id='goods-detail']/div/div[2]/div/div[1]/span/text()").extract_first()
         item['menpai'] = response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[28]/text()').extract_first()[3:]
