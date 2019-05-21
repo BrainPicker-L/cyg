@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('role/',role,name="role"),
+    path('role_sort/<menpai>/<verbose_name>/<lowPrice>/<heightPrice>',role_sort,name="role_sort"),
 ]

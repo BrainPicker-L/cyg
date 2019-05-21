@@ -8,5 +8,6 @@ build/
 
 *.__pycache__/
 db.sqlite3
-migrations/
+*.migrations/
 .scrapy/
+role/migrations/
