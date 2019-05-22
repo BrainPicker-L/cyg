@@ -78,6 +78,13 @@ class RoleinfoSpider(scrapy.Spider):
         #神器星级
         item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
 
+
+        wai_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[11]/span/text()').extract_first().replace(" ", ""))
+        nei_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[12]/span/text()').extract_first().replace(" ", ""))
+        item["neiwai_max_attack"] = max(wai_attack, nei_attack)
+
+
+
         item['name'] = response.xpath("//*[@id='goods-detail']/div/div[2]/div/div[1]/span/text()").extract_first()
         item['menpai'] = response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[28]/text()').extract_first()[3:]
         item['cloth_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[1]').extract_first()[5:])
