@@ -108,6 +108,20 @@ class RoleinfoSpider(scrapy.Spider):
             height_shuxing = '毒属性'
         del shuxing_list[pos]
 
+        kang_list = [re.findall(r'\d+',i)[0] for i in response.xpath('//div[@class="model"]/div[@class="c-o-l"]/p[2]/text()').extract()[:4]]
+        kang_max = max(kang_list)
+        kang_pos = kang_list.index(kang_max)
+        if kang_pos == 0:
+            height_kang = '冰抗'
+        elif kang_pos == 1:
+            height_kang = '火抗'
+        elif kang_pos == 2:
+            height_kang = '玄抗'
+        elif kang_pos == 3:
+            height_kang = '毒抗'
+
+        item['kang_heightest_value'] = kang_max
+        item['kang_heightest_name'] = height_kang
         item['attack_heightest_value'] = attack_heightest_value
         item['attack_heightest_name'] = height_shuxing
         item['others_attack'] = sum(shuxing_list)

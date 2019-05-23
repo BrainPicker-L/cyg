@@ -33,7 +33,9 @@
     <thead>
     <tr>
         {% for verbose_name in verbose_names %}
-        <th><a href="{% url 'role_sort' menpai=select_menpai verbose_name=verbose_name lowPrice=lowPrice heightPrice=heightPrice%}">{{verbose_name}}</a></th>
+        <th>
+            <a href="{% url 'role_sort' menpai=select_menpai verbose_name=verbose_name lowPrice=lowPrice heightPrice=heightPrice%}">{{verbose_name}}</a>
+        </th>
         {% empty %}
         没有字段
         {% endfor %}
@@ -66,16 +68,56 @@
         <td>{{role.shizhuang_num}}</td>
         <td>{{role.area}}</td>
         <td>{{role.shenqi_star}}</td>
+        <td>{{role.neiwai_max_attack}}</td>
+        <td>{{role.kang_heightest_name}}</td>
+        <td>{{role.kang_heightest_value}}</td>
     </tr>
     {% empty %}
 
     {% endfor %}
     </tbody>
-
-    </tbody>
-
 </table>
 
+<div class="paginator">
+    <ul class="pagination">
+        {# 上一页 #}
+        <li>
+            {% if page_of_roles.has_previous %}
+            <a href="?page={{ page_of_roles.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            {% else %}
+            <span aria-hidden="true">&laquo;</span>
+            {% endif %}
+        </li>
+        {# 全部页码 #}
+        {% for page_num in page_range %}
+        {% if page_num == page_of_roles.number %}
+        <li class="active"><span>{{ page_num }}</span></li>
+        {% else %}
+        {% if page_num == '...' %}
+        <li><span>{{ page_num }}</span></li>
+        {% else %}
+        <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {# 下一页 #}
+        <li>
+            {% if page_of_roles.has_next %}
+            <a href="?page={{ page_of_roles.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            {% else %}
+            <span aria-hidden="true">&raquo;</span>
+            {% endif %}
+        </li>
+    </ul>
+    <p>
+        共有{{ page_of_roles.paginator.count }}篇博客，
+        当前第{{ page_of_roles.number }}页，共{{ page_of_roles.paginator.num_pages }}页
+    </p>
+</div>
 
 </body>
 
