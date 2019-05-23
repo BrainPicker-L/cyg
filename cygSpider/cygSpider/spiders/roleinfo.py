@@ -108,7 +108,7 @@ class RoleinfoSpider(scrapy.Spider):
             height_shuxing = '毒属性'
         del shuxing_list[pos]
 
-        kang_list = [re.findall(r'\d+',i)[0] for i in response.xpath('//div[@class="model"]/div[@class="c-o-l"]/p[2]/text()').extract()[:4]]
+        kang_list = list(map(int,[re.findall(r'\d+',i)[0] for i in response.xpath('//div[@class="model"]/div[@class="c-o-l"]/p[2]/text()').extract()[:4]]))
         kang_max = max(kang_list)
         kang_pos = kang_list.index(kang_max)
         if kang_pos == 0:
