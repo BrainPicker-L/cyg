@@ -9,7 +9,7 @@ import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=700-2000&gem_level=4&gem_num=40&have_chosen=price*700-2000%20gem_level*4&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&gem_level=4&gem_num=40&have_chosen=gem_level*4&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         for li in li_list:
