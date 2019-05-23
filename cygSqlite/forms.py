@@ -17,6 +17,6 @@ class SelectForm(forms.Form):
         ('唐门', '唐门'),
         ('鬼谷', '鬼谷'),
     )
-    lowPrice = forms.CharField(required=True)
-    heightPrice = forms.CharField(required=True)
+    lowPrice = forms.CharField(required=False)
+    heightPrice = forms.CharField(required=False)
     sel_value = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE))

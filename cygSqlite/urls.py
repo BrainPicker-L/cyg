@@ -19,6 +19,5 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('role/',role,name="role"),
-    path('role_sort/<menpai>/<verbose_name>/<lowPrice>/<heightPrice>',role_sort,name="role_sort"),
+    path('role/',role2,name="role2"),
 ]

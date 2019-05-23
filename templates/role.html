@@ -10,10 +10,8 @@
 </head>
 <body>
 <table class="table table-striped">
-    <form action="" method="post">
-        {% csrf_token %}
+    <form action="" method="get">
         <div class="fieldWrapper">
-
             <label for="id_lowPrice">价格区间</label>
             {{select_form.lowPrice}}
             <lable>——</lable>
@@ -21,8 +19,6 @@
             {{select_form.heightPrice}}
         </div>
         <select name="sel_value">
-            <option>{{ select_menpai }}</option>
-
             {% for key,value in select_form.SELVALUE %}
             <option value="{{ value }}">{{ key }}</option>
             {% endfor %}
@@ -34,7 +30,11 @@
     <tr>
         {% for verbose_name in verbose_names %}
         <th>
-            <a href="{% url 'role_sort' menpai=select_menpai verbose_name=verbose_name lowPrice=lowPrice heightPrice=heightPrice%}">{{verbose_name}}</a>
+            {% if request_url_all == '/role/' %}
+                <a href="{{ request_url_all }}?verbose_name={{verbose_name}}">{{verbose_name}}</a>
+            {% else %}
+                <a href="{{ request_url_all }}&verbose_name={{verbose_name}}">{{verbose_name}}</a>
+            {% endif %}
         </th>
         {% empty %}
         没有字段
@@ -83,7 +83,7 @@
         {# 上一页 #}
         <li>
             {% if page_of_roles.has_previous %}
-            <a href="?page={{ page_of_roles.previous_page_number }}" aria-label="Previous">
+            <a href="?page={{ page_of_roles.previous_page_number }}&{{ request_url }}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             {% else %}
@@ -98,14 +98,14 @@
         {% if page_num == '...' %}
         <li><span>{{ page_num }}</span></li>
         {% else %}
-        <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+        <li><a href="?page={{ page_num }}&{{ request_url }}">{{ page_num }}</a></li>
         {% endif %}
         {% endif %}
         {% endfor %}
         {# 下一页 #}
         <li>
             {% if page_of_roles.has_next %}
-            <a href="?page={{ page_of_roles.next_page_number }}" aria-label="Next">
+            <a href="?page={{ page_of_roles.next_page_number }}&{{ request_url }}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
             {% else %}
@@ -114,7 +114,7 @@
         </li>
     </ul>
     <p>
-        共有{{ page_of_roles.paginator.count }}篇博客，
+        共有{{ page_of_roles.paginator.count }}条角色信息，
         当前第{{ page_of_roles.number }}页，共{{ page_of_roles.paginator.num_pages }}页
     </p>
 </div>
