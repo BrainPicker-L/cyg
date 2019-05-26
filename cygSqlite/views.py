@@ -36,16 +36,20 @@ def role2(request):
     heightPrice = request.GET.get("heightPrice",10000001)
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
-
+    l_level,h_level = list(map(int,(request.GET.get("sel_value2","80-119").split("-"))))
+    print(l_level,h_level)
     if sel_value == "全部":
         context["roles"] = Role.objects.all()
     else:
         context["roles"] = Role.objects.filter(menpai=sel_value)
+    context["roles"] = context["roles"].filter(level__gte=l_level)
+    context["roles"] = context["roles"].filter(level__lte=h_level)
     if lowPrice and heightPrice and (lowPrice != "None" and heightPrice != "None"):
         context["lowPrice"] = lowPrice
         context["heightPrice"] = heightPrice
         context["roles"] = context["roles"].filter(price__gte=lowPrice)
         context["roles"] = context["roles"].filter(price__lte=heightPrice)
+
     context["request_url"] = re.sub(r'page=\d+&',"",request.get_full_path().split("/")[-1][1:])
     context["request_url_all"] = re.sub(r'&verbose_name=.+','',request.get_full_path())
     print(context["request_url_all"])

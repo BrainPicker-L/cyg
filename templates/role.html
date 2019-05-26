@@ -23,6 +23,12 @@
             <option value="{{ value }}">{{ key }}</option>
             {% endfor %}
         </select>
+        <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</lable>
+        <select name="sel_value2">
+            {% for key,value in select_form.SELVALUE2 %}
+            <option value="{{ value }}">{{ key }}</option>
+            {% endfor %}
+        </select>
         <input type="submit">
     </form>
     <caption>角色列表</caption>

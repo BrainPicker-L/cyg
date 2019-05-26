@@ -17,6 +17,13 @@ class SelectForm(forms.Form):
         ('唐门', '唐门'),
         ('鬼谷', '鬼谷'),
     )
+    SELVALUE2 = (
+        ('无等级限制','80-119'),
+        ('80-89','80-89'),
+        ('90-99','90-99'),
+        ('100-119','100-119'),
+    )
     lowPrice = forms.CharField(required=False)
     heightPrice = forms.CharField(required=False)
     sel_value = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE))
+    sel_value2 = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE2))
