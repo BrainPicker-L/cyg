@@ -101,6 +101,17 @@ class RoleinfoSpider(scrapy.Spider):
         #神器星级
         item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
 
+        #稀有坐骑统计
+        zuoji_list = re.findall(r'"name":"坐骑：(.*?)".*?"guiZhong":(\d).*?"useTimeDesc2":"该物品将在0年0月(\d)日24点消失",',html)
+        zuoji_true = []
+        for zuoji in zuoji_list:
+            if zuoji[1] == "1" and zuoji[2] == "0":
+                zuoji_true.append(zuoji[0])
+        item["zuoji"] = ",".join(zuoji_true)
+        #稀有座机数量
+        item["zuoji_num"] = len(zuoji_true)
+        #重楼数量
+        item["chonglou_num"] = len(re.findall(r'"name":"重楼(.+?)"',html))
 
         wai_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[11]/span/text()').extract_first().replace(" ", ""))
         nei_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[12]/span/text()').extract_first().replace(" ", ""))

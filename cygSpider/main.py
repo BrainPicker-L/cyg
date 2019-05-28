@@ -4,13 +4,13 @@ import sqlite3
 
 conn =sqlite3.connect("../db.sqlite3", isolation_level=None)
 
-os.chdir("/home/cyg/cygSpider")
+#os.chdir("/home/cyg/cygSpider")
 from delete_catch import delete
-delete()
-conn =sqlite3.connect("/home/cyg/db.sqlite3", isolation_level=None)
+#delete()
+
 
 conn.execute("DELETE FROM role_role")
-execute("scrapy crawl roleinfo".split())
+#execute("scrapy crawl roleinfo".split())
 #
 #
 conn.execute("delete from role_role where role_role.rowid not in (select MAX(role_role.rowid) from role_role group by detail_url)")
