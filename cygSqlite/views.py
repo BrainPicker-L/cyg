@@ -44,19 +44,30 @@ def role(request):
     heightPrice = request.GET.get("heightPrice",10000001)
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
+<<<<<<< HEAD
     visitnum = visitNums.objects.filter(name="总搜索次数")[0]
     visitnum.visitnumsAll += 1
     visitnum.save()
+=======
+    l_level,h_level = list(map(int,(request.GET.get("sel_value2","80-119").split("-"))))
+    print(l_level,h_level)
+>>>>>>> 08ac268658e87391da30352670ad9f02af7b03de
     if sel_value == "全部":
         context["roles"] = Role.objects.all()
     else:
         context["roles"] = Role.objects.filter(menpai=sel_value)
+<<<<<<< HEAD
 
+=======
+    context["roles"] = context["roles"].filter(level__gte=l_level)
+    context["roles"] = context["roles"].filter(level__lte=h_level)
+>>>>>>> 08ac268658e87391da30352670ad9f02af7b03de
     if lowPrice and heightPrice and (lowPrice != "None" and heightPrice != "None"):
         context["lowPrice"] = lowPrice
         context["heightPrice"] = heightPrice
         context["roles"] = context["roles"].filter(price__gte=lowPrice)
         context["roles"] = context["roles"].filter(price__lte=heightPrice)
+
     context["request_url"] = re.sub(r'page=\d+&',"",request.get_full_path().split("/")[-1][1:])
     context["request_url_all"] = re.sub(r'&verbose_name=.+','',request.get_full_path())
     print(context["request_url_all"])
