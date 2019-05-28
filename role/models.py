@@ -29,3 +29,8 @@ class Role(models.Model):
     neiwai_max_attack = models.IntegerField(verbose_name="最高内外功",default=0)
     kang_heightest_name = models.CharField(verbose_name="最高抗性名称",max_length=30,default="")
     kang_heightest_value = models.IntegerField(verbose_name="最高抗性值",default=0)
+
+
+class visitNums(models.Model):
+    name = models.CharField(verbose_name="名称",default="",max_length=50)
+    visitnumsAll = models.IntegerField(verbose_name="总访问次数",default=0)

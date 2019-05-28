@@ -1,10 +1,18 @@
-from role.models import Role
+from role.models import Role,visitNums
 from django.shortcuts import render
 from .forms import SelectForm
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.conf import settings
 import re
+
+def index(request):
+    context = {}
+    return render(request, "index.html", context)
+
+
+
+
 
 
 def get_role_list_common_data(request, roles_all_list):
@@ -30,17 +38,20 @@ def get_role_list_common_data(request, roles_all_list):
 
 
 
-def role2(request):
+def role(request):
     context = {}
     lowPrice = request.GET.get("lowPrice",100)
     heightPrice = request.GET.get("heightPrice",10000001)
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
-
+    visitnum = visitNums.objects.filter(name="总搜索次数")[0]
+    visitnum.visitnumsAll += 1
+    visitnum.save()
     if sel_value == "全部":
         context["roles"] = Role.objects.all()
     else:
         context["roles"] = Role.objects.filter(menpai=sel_value)
+
     if lowPrice and heightPrice and (lowPrice != "None" and heightPrice != "None"):
         context["lowPrice"] = lowPrice
         context["heightPrice"] = heightPrice
@@ -50,13 +61,17 @@ def role2(request):
     context["request_url_all"] = re.sub(r'&verbose_name=.+','',request.get_full_path())
     print(context["request_url_all"])
 
+    try:
+        context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:]
+        context["true_names"] = [name.name for name in context["roles"][0]._meta.fields][1:]
+        num = context["verbose_names"].index(verbose_name)
+        context["roles"] = context["roles"].order_by("-" + context["true_names"][num])
+    except:
+        context["verbose_names"] = []
+        context["true_names"] = []
+        context["roles"] = []
 
-    context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:]
-    context["true_names"] = [name.name for name in context["roles"][0]._meta.fields][1:]
-    num = context["verbose_names"].index(verbose_name)
-    print(context["true_names"][num])
-    context["roles"] = context["roles"].order_by("-"+context["true_names"][num])
-
+    context["visitnum"] = visitnum.visitnumsAll
     context["roles"], context["page_of_roles"], context["page_range"] = get_role_list_common_data(request,context["roles"])
 
 

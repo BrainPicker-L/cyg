@@ -2,7 +2,7 @@ from scrapy.cmdline import execute
 import os
 import sqlite3
 conn =sqlite3.connect("../db.sqlite3", isolation_level=None)
-#conn.execute("DELETE FROM role_role")
+conn.execute("DELETE FROM role_role")
 execute("scrapy crawl roleinfo".split())
 #
 #

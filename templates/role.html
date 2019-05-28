@@ -1,17 +1,21 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>角色信息</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-</head>
-<body>
+{% block title %}
+角色检索
+{% endblock %}
+{% block header_extends %}
+{% endblock %}
+
+
+{% block nav_role_active %}active{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
 <table class="table table-striped">
     <form action="" method="get">
-        <div class="fieldWrapper">
+        <div class="fieldWrapper" style="margin-top:80px">
             <label for="id_lowPrice">价格区间</label>
             {{select_form.lowPrice}}
             <lable>——</lable>
@@ -31,9 +35,9 @@
         {% for verbose_name in verbose_names %}
         <th>
             {% if request_url_all == '/role/' %}
-                <a href="{{ request_url_all }}?verbose_name={{verbose_name}}">{{verbose_name}}</a>
+            <a href="{{ request_url_all }}?verbose_name={{verbose_name}}">{{verbose_name}}</a>
             {% else %}
-                <a href="{{ request_url_all }}&verbose_name={{verbose_name}}">{{verbose_name}}</a>
+            <a href="{{ request_url_all }}&verbose_name={{verbose_name}}">{{verbose_name}}</a>
             {% endif %}
         </th>
         {% empty %}
@@ -118,8 +122,10 @@
         当前第{{ page_of_roles.number }}页，共{{ page_of_roles.paginator.num_pages }}页
     </p>
 </div>
+<div style="text-align: center;">网站总访问次数:{{ visitnum }}</div>
+<div style="text-align: center;">想增加搜索字段，或者增加搜索内容可以联系微信：lzz122zzl</div>
+{% else %}
+<h1>请先注册登录</h1>
 
-</body>
-
-
-</html>
+{% endif %}
+{% endblock %}
