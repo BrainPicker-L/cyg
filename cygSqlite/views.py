@@ -69,12 +69,16 @@ def role(request):
     context["request_url"] = re.sub(r'page=\d+&',"",request.get_full_path().split("/")[-1][1:])
     context["request_url_all"] = re.sub(r'&verbose_name=.+','',request.get_full_path())
     print(context["request_url_all"])
-
+    print(verbose_name)
     try:
-        context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:]
+        context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:-1]
         context["true_names"] = [name.name for name in context["roles"][0]._meta.fields][1:]
         num = context["verbose_names"].index(verbose_name)
-        context["roles"] = context["roles"].order_by("-" + context["true_names"][num])
+        if verbose_name == "稀有坐骑":
+
+            context["roles"] = context["roles"].order_by("-zuoji_num")
+        else:
+            context["roles"] = context["roles"].order_by("-" + context["true_names"][num])
     except:
         context["verbose_names"] = []
         context["true_names"] = []
