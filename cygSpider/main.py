@@ -1,14 +1,14 @@
 from scrapy.cmdline import execute
 import os
 import sqlite3
-<<<<<<< HEAD
+
 conn =sqlite3.connect("../db.sqlite3", isolation_level=None)
-=======
+
 os.chdir("/home/cyg/cygSpider")
 from delete_catch import delete
 delete()
 conn =sqlite3.connect("/home/cyg/db.sqlite3", isolation_level=None)
->>>>>>> 08ac268658e87391da30352670ad9f02af7b03de
+
 conn.execute("DELETE FROM role_role")
 execute("scrapy crawl roleinfo".split())
 #
