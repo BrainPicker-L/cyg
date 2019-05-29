@@ -12,7 +12,7 @@
 {% block nav_role_active %}active{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
 <table class="table table-striped">
     <form action="" method="get">
         <div class="fieldWrapper" style="margin-top:80px">
@@ -36,6 +36,7 @@
         <input type="submit">
     </form>
     <caption>角色列表</caption>
+    <div>小窍门：点击属性字段名称可以实现从高到低排序</div>
     <thead>
     <tr>
         {% for verbose_name in verbose_names %}
@@ -132,8 +133,5 @@
 </div>
 <div style="text-align: center;">网站总访问次数:{{ visitnum }}</div>
 <div style="text-align: center;">想增加搜索字段，或者增加搜索内容可以联系微信：lzz122zzl</div>
-{% else %}
-<h1>请先注册登录</h1>
 
-{% endif %}
 {% endblock %}
