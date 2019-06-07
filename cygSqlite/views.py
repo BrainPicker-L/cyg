@@ -44,9 +44,10 @@ def role(request):
     heightPrice = request.GET.get("heightPrice",10000001)
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
-    visitnum = visitNums.objects.filter(name="总搜索次数")[0]
-    visitnum.visitnumsAll += 1
-    visitnum.save()
+    visitnum,judge = visitNums.objects.get_or_create(name="总搜索次数")
+    if judge:
+        visitnum.visitnumsAll += 1
+        visitnum.save()
 
     l_level,h_level = list(map(int,(request.GET.get("sel_value2","80-119").split("-"))))
 
