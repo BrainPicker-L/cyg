@@ -1,8 +1,14 @@
-
 import os
-import sqlite3
-os.chdir("/home/cyg/cygSpider")
-conn =sqlite3.connect("/home/cyg/db.sqlite3", isolation_level=None)
-conn.execute("delete from role_role where role_role.rowid not in (select MAX(role_role.rowid) from role_role group by detail_url)")
-conn.execute('vacuum')
+import MySQLdb
+#os.chdir("/home/cyg/cygSpider")
+conn =MySQLdb.connect("127.0.0.1", "root", "lzz804456852", "cyg", charset='utf8')
+cursor = conn.cursor()
+cursor.execute("""delete from role_role where id 
+in (select id from (
+    select id from role_role
+    where (role_role.name,role_role.price) 
+    in (select name,price from role_role group by name,price having count(*) > 1)
+    and id not in (select min(id)  from role_role group by name,price having count(*)>1) 
+)as temp );""")
+conn.commit()
 conn.close()
