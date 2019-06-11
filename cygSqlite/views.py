@@ -45,7 +45,8 @@ def role(request):
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
     visitnum,judge = visitNums.objects.get_or_create(name="总搜索次数")
-    if judge:
+    print(judge)
+    if not judge:
         visitnum.visitnumsAll += 1
         visitnum.save()
 
@@ -91,8 +92,6 @@ def role(request):
 
     context["visitnum"] = visitnum.visitnumsAll
     context["roles"], context["page_of_roles"], context["page_range"] = get_role_list_common_data(request,context["roles"])
-
-
 
 
     context["select_form"] = SelectForm()
