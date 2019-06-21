@@ -13,7 +13,7 @@ db.sqlite3
 role/migrations/
 gunicorn/
 cygSqlite/settings.py
-
+user/migrations/
 cygSpider/main.py
 cygSpider/main2.py
 cygSpider/main3.py
