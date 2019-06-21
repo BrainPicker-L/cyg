@@ -118,6 +118,9 @@ class RoleinfoSpider(scrapy.Spider):
         item["neiwai_max_attack"] = max(wai_attack, nei_attack)
 
 
+        #橙色金色真元数量
+        zhenyuanList = re.findall(r'data-grade="(\d+)"',html)
+        item['orange_zhenyuan'] = zhenyuanList.count('5') + zhenyuanList.count('6')
 
         item['name'] = response.xpath("//*[@id='goods-detail']/div/div[2]/div/div[1]/span/text()").extract_first()
         item['menpai'] = response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[28]/text()').extract_first()[3:]

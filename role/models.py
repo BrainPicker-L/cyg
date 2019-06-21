@@ -27,6 +27,7 @@ class Role(models.Model):
     area = models.CharField(verbose_name="区服", max_length=200, default='')
     shenqi_star = models.IntegerField(verbose_name="神器星级",default=0)
     neiwai_max_attack = models.IntegerField(verbose_name="最高内外功",default=0)
+    orange_zhenyuan = models.IntegerField(verbose_name='橙色金色真元数量',default=0)
     kang_heightest_name = models.CharField(verbose_name="最高抗性名称",max_length=30,default="")
     kang_heightest_value = models.IntegerField(verbose_name="最高抗性值",default=0)
     zuoji = models.CharField(verbose_name="稀有坐骑",max_length=200,default='')
