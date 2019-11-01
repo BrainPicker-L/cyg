@@ -1,7 +1,0 @@
-cyg_site:
-  build: .
-  command: gunicorn cygSqlite.wsgi:application -c gunicorn.conf.py
-  ports:
-    - "8000:8000"
-  external_links:
-    - mysql

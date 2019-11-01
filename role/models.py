@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Role(models.Model):
     if30 = models.IntegerField(verbose_name='三十附体',default=0)
+    star8 = models.IntegerField(verbose_name='8，9星装备数量，最高为16',default=0)
     price = models.IntegerField(verbose_name='价格')
     name = models.CharField(verbose_name='角色名', max_length=30)
     menpai = models.CharField(verbose_name='门派',max_length=20)
@@ -28,6 +29,9 @@ class Role(models.Model):
     shenqi_star = models.IntegerField(verbose_name="神器星级",default=0)
     neiwai_max_attack = models.IntegerField(verbose_name="最高内外功",default=0)
     orange_zhenyuan = models.IntegerField(verbose_name='橙色金色真元数量',default=0)
+    diaowen7 = models.IntegerField(verbose_name='7级雕文数量',default=0)
+    diaowen6 = models.IntegerField(verbose_name='6级雕文数量',default=0)
+    yuanbao = models.IntegerField(verbose_name='所有元宝',default=0)
     kang_heightest_name = models.CharField(verbose_name="最高抗性名称",max_length=30,default="")
     kang_heightest_value = models.IntegerField(verbose_name="最高抗性值",default=0)
     zuoji = models.CharField(verbose_name="稀有坐骑",max_length=200,default='')
@@ -39,3 +43,5 @@ class Role(models.Model):
 class visitNums(models.Model):
     name = models.CharField(verbose_name="名称",default="",max_length=50)
     visitnumsAll = models.IntegerField(verbose_name="总访问次数",default=0)
+
+
