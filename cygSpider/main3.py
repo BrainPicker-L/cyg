@@ -1,7 +1,9 @@
 import os
 import MySQLdb
-#os.chdir("/home/cyg/cygSpider")
-conn =MySQLdb.connect("127.0.0.1", "root", "lzz804456852", "cyg_db", charset='utf8')
+os.chdir("/home/cyg/cygSpider")
+from conf.py import HOST,PORT,USER,PASSWORD,DB_NAME
+
+conn =MySQLdb.connect(HOST, USER, PASSWORD, DB_NAME, charset='utf8')
 cursor = conn.cursor()
 cursor.execute("""delete from role_role where id 
 in (select id from (

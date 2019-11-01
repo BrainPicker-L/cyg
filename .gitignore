@@ -14,3 +14,4 @@ role/migrations/
 gunicorn/
 cygSqlite/settings.py
 user/migrations/
+cygSpider/conf.py
