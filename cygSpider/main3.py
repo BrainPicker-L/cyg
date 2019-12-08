@@ -1,7 +1,7 @@
 import os
 import MySQLdb
 os.chdir("/home/cyg/cygSpider")
-from conf.py import HOST,PORT,USER,PASSWORD,DB_NAME
+from conf import HOST,PORT,USER,PASSWORD,DB_NAME
 
 conn =MySQLdb.connect(HOST, USER, PASSWORD, DB_NAME, charset='utf8')
 cursor = conn.cursor()
