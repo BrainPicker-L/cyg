@@ -3,13 +3,14 @@ import scrapy
 from cygSpider.items import RoleItem
 import re
 import time
+import datetime
 from role.models import *
 
 import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&gem_level=3&gem_num=30&have_chosen=gem_level*3&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-3100&gem_level=5&gem_num=10&have_chosen=gem_level*5%20price*100-3100&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -186,5 +187,16 @@ class RoleinfoSpider(scrapy.Spider):
         #8，9星装备数量
         text = re.findall('"equip".*?"18"',html)[0]
         item['star8'] = len(re.findall('"xingJi":8|"xingJi":9',text))
+
+
+        #剩余时间
+        dirty_date = re.findall('((\d+天)?\d+小时)',html)[0][0]
+        days = 0
+        if "天" in dirty_date:
+            days = int(dirty_date[:2])
+            hours = int(dirty_date[3:5])
+        else:
+            hours = int(dirty_date[:2])
+        item['expire_date'] = (datetime.datetime.now() + datetime.timedelta(days=days) + datetime.timedelta(hours=hours)).strftime('%Y-%m-%d-%H')
         yield item
 
