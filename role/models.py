@@ -35,9 +35,9 @@ class Role(models.Model):
     kang_heightest_name = models.CharField(verbose_name="最高抗性名称",max_length=30,default="")
     kang_heightest_value = models.IntegerField(verbose_name="最高抗性值",default=0)
     zuoji = models.CharField(verbose_name="稀有坐骑",max_length=200,default='')
-
     chonglou_num = models.IntegerField(verbose_name="重楼个数",default=0)
     zuoji_num = models.IntegerField(verbose_name="稀有坐骑数量", default=0)
+    expire_date = models.CharField(verbose_name="过期时间",default='',max_length=100)
 
 
 class visitNums(models.Model):
