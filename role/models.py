@@ -11,6 +11,8 @@ class Role(models.Model):
     stone_grade = models.IntegerField(verbose_name='宝石评分')
     level = models.IntegerField(verbose_name='等级')
     hp = models.IntegerField(verbose_name='血上限')
+    tili = models.IntegerField(verbose_name='体力', default=0)
+    shenfa = models.IntegerField(verbose_name='身法', default=0)
     attack_heightest_name = models.CharField(verbose_name='最高属性攻击名称', max_length=30)
     attack_heightest_value = models.IntegerField(verbose_name='最高属性攻击值')
     others_attack = models.IntegerField(verbose_name='副属性攻击')

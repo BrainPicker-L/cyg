@@ -4,55 +4,57 @@ from cygSpider.items import RoleItem
 import re
 import time
 from role.models import *
-
+# conda activate cyg_py36
+# python manage.py runserver
+# scrapy crawl roleinfo
 import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/?gem_level=4&gem_num=65&price=100-3000&order_by=price&have_chosen=gem_level*4%20price*100-3000#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8502&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
-        if hours_now in [i for i in range(8,25)]:
-            for li in li_list:
-                item = RoleItem()
-                item['price'] = int((li.xpath("./div/p[@class='price']/text()").extract_first())[1:])
-                item['detail_url'] = li.xpath("./span[@class='item-img']/a/@href").extract_first()
-                yield scrapy.Request(
-                    item['detail_url'],
-                    callback=self.parse_detail,
-                    meta={"item":item},
-                    dont_filter=False
-                )
-            #翻页
-            next_url = response.xpath("//div[@class='ui-pagination']/a[@class='after']/@href").extract_first()
-            page_num = int(re.findall(r'page_num=(\d+)',next_url)[0])
-            if next_url != '' and page_num<=20:
-                yield scrapy.Request(
-                    next_url,
-                    callback=self.parse,
-                    dont_filter=False
-                )
-        else:
-            for li in li_list:
-                item = RoleItem()
-                item['price'] = int((li.xpath("./div/p[@class='price']/text()").extract_first())[1:])
-                item['detail_url'] = li.xpath("./span[@class='item-img']/a/@href").extract_first()
-                yield scrapy.Request(
-                    item['detail_url'],
-                    callback=self.parse_detail,
-                    meta={"item":item},
-                    dont_filter=False
-                )
-            #翻页
-            next_url = response.xpath("//div[@class='ui-pagination']/a[@class='after']/@href").extract_first()
-            #page_num = int(re.findall(r'page_num=(\d+)',next_url)[0])
-            if next_url != '':
-                yield scrapy.Request(
-                    next_url,
-                    callback=self.parse,
-                    dont_filter=False
-                )
+        # if hours_now in [i for i in range(8,25)]:
+        #     for li in li_list:
+        #         item = RoleItem()
+        #         item['price'] = int((li.xpath("./div/p[@class='price']/text()").extract_first())[1:])
+        #         item['detail_url'] = li.xpath("./span[@class='item-img']/a/@href").extract_first()
+        #         yield scrapy.Request(
+        #             item['detail_url'],
+        #             callback=self.parse_detail,
+        #             meta={"item":item},
+        #             dont_filter=False
+        #         )
+        #     #翻页
+        #     next_url = response.xpath("//div[@class='ui-pagination']/a[@class='after']/@href").extract_first()
+        #     page_num = int(re.findall(r'page_num=(\d+)',next_url)[0])
+        #     if next_url != '' and page_num<=20:
+        #         yield scrapy.Request(
+        #             next_url,
+        #             callback=self.parse,
+        #             dont_filter=False
+        #         )
+        # else:
+        for li in li_list:
+            item = RoleItem()
+            item['price'] = int((li.xpath("./div/p[@class='price']/text()").extract_first())[1:])
+            item['detail_url'] = li.xpath("./span[@class='item-img']/a/@href").extract_first()
+            yield scrapy.Request(
+                item['detail_url'],
+                callback=self.parse_detail,
+                meta={"item":item},
+                dont_filter=False
+            )
+        #翻页
+        next_url = response.xpath("//div[@class='ui-pagination']/a[@class='after']/@href").extract_first()
+        #page_num = int(re.findall(r'page_num=(\d+)',next_url)[0])
+        if next_url != '':
+            yield scrapy.Request(
+                next_url,
+                callback=self.parse,
+                dont_filter=False
+            )
 
 
     def parse_detail(self, response):   #处理详情页
@@ -186,5 +188,15 @@ class RoleinfoSpider(scrapy.Spider):
         #8，9星装备数量
         text = re.findall('"equip".*?"18"',html)[0]
         item['star8'] = len(re.findall('"xingJi":8|"xingJi":9',text))
-        yield item
 
+        #体力身法获取
+        item["tili"] = int(re.findall(r'<div class="row2">体力：<span class="span">(\d+) <b class="plus">',html)[0])
+        item["shenfa"] = int(re.findall(r'<div class="row2">身法：<span class="span">(\d+) <b class="plus">',html)[0])
+
+        # # 秘技获取
+        # item["miji"] = ""
+        # miji_list = response.xpath('//*[@class="tab-cont-item vitality"]/div[4]//div[@class="method-info"]/p/text()')
+        # miji_level_list = response.xpath('//*[@class="tab-cont-item vitality"]/div[4]//i[@class="dengji"]/text()')
+        # for miji_num in range(len(miji_list)):
+        #     item["miji"] += "%s[%s]"%(miji_list[miji_num], miji_level_list[miji_num])
+        yield item
