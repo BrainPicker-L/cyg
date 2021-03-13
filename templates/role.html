@@ -39,6 +39,23 @@
             <option value="{{ value }}">{{ key }}</option>
             {% endfor %}
         </select>
+                <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</lable>
+        <select name="sel_value4">
+            {% for key,value in select_form.SELVALUE4 %}
+            <option value="{{ value }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+        <div>
+            <label for="id_baoshiLevel">宝石评分</label>
+            {{select_form.baoshiLevel}}
+        <label for="id_zhenyuanNum">橙色真元</label>
+            {{select_form.zhenyuanNum}}
+        <label for="id_tili_d">体力鼎</label>
+            {{select_form.tili_d}}
+        <label for="id_shuxing_d">属性鼎</label>
+            {{select_form.shuxing_d}}
+        </div>
+
         <input type="submit">
     </form>
     <caption>角色列表</caption>
@@ -90,6 +107,7 @@
         <td>{{role.shenqi_star}}</td>
         <td>{{role.neiwai_max_attack}}</td>
         <td>{{role.orange_zhenyuan}}</td>
+        <td>{{role.diaowen8}}</td>
         <td>{{role.diaowen7}}</td>
         <td>{{role.diaowen6}}</td>
         <td>{{role.yuanbao}}</td>

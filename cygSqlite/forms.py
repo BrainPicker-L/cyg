@@ -49,8 +49,20 @@ class SelectForm(forms.Form):
         ("无双网通", "无双网通"),
         ("人气专区", "人气专区"),
     )
+    SELVALUE4 = (
+        ("无主属性限制", "无主属性限制"),
+        ("冰属性", "冰属性"),
+        ("火属性", "火属性"),
+        ("玄属性", "玄属性"),
+        ("毒属性", "毒属性")
+    )
     lowPrice = forms.CharField(required=False)
     heightPrice = forms.CharField(required=False)
+    baoshiLevel = forms.CharField(required=False)
+    zhenyuanNum = forms.CharField(required=False)
+    tili_d = forms.CharField(required=False)
+    shuxing_d = forms.CharField(required=False)
     sel_value = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE))
     sel_value2 = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE2))
     sel_value3 = forms.CharField(max_length=15, widget=forms.widgets.Select(choices=SELVALUE3))
+    sel_value4 = forms.CharField(max_length=15, widget=forms.widgets.Select(choices=SELVALUE4))

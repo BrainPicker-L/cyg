@@ -11,7 +11,7 @@ import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8502&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8504&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -179,6 +179,7 @@ class RoleinfoSpider(scrapy.Spider):
         print(b)
 
         # 7级雕文，6级雕文等级
+        item['diaowen8'] = len(re.findall('雕纹8级',html))
         item['diaowen7'] = len(re.findall('雕纹7级',html))
         item['diaowen6'] = len(re.findall('雕纹6级', html))
 

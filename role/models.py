@@ -31,6 +31,7 @@ class Role(models.Model):
     shenqi_star = models.IntegerField(verbose_name="神器星级",default=0)
     neiwai_max_attack = models.IntegerField(verbose_name="最高内外功",default=0)
     orange_zhenyuan = models.IntegerField(verbose_name='橙色金色真元数量',default=0)
+    diaowen8 = models.IntegerField(verbose_name='8级雕文数量',default=0)
     diaowen7 = models.IntegerField(verbose_name='7级雕文数量',default=0)
     diaowen6 = models.IntegerField(verbose_name='6级雕文数量',default=0)
     yuanbao = models.IntegerField(verbose_name='所有元宝',default=0)

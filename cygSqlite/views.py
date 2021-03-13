@@ -42,10 +42,15 @@ def role(request):
     context = {}
     lowPrice = request.GET.get("lowPrice",100)
     heightPrice = request.GET.get("heightPrice",10000001)
+    baoshiLevel = request.GET.get("baoshiLevel",0)
+    zhenyuanNum = request.GET.get("zhenyuanNum",0)
+    tili_d = request.GET.get("tili_d",0)
+    shuxing_d = request.GET.get("shuxing_d",0)
+
     sel_value = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
     visitnum,judge = visitNums.objects.get_or_create(name="总搜索次数")
-    print(judge)
+    print(baoshiLevel)
     if not judge:
         visitnum.visitnumsAll += 1
         visitnum.save()
@@ -54,15 +59,25 @@ def role(request):
 
     qufu = request.GET.get("sel_value3","无区服限制")
 
-
-    print(qufu)
     if sel_value == "全部":
         context["roles"] = Role.objects.all()
     else:
         context["roles"] = Role.objects.filter(menpai=sel_value)
 
+    main_shuxing = request.GET.get("sel_value4", "无主属性限制")
+    if main_shuxing != "无主属性限制":
+        context["roles"] = context["roles"].filter(attack_heightest_name=main_shuxing)
+
     context["roles"] = context["roles"].filter(level__gte=l_level)
     context["roles"] = context["roles"].filter(level__lte=h_level)
+    if baoshiLevel and baoshiLevel != None:
+        context["roles"] = context["roles"].filter(stone_grade__gte=baoshiLevel)
+    if zhenyuanNum and zhenyuanNum != None:
+        context["roles"] = context["roles"].filter(orange_zhenyuan__gte=zhenyuanNum)
+    if tili_d and tili_d != None:
+        context["roles"] = context["roles"].filter(tili_d__gte=tili_d)
+    if shuxing_d and shuxing_d !=None:
+        context["roles"] = context["roles"].filter(shuxing_d__gte=shuxing_d)
 
     if qufu != "无区服限制":
         context["roles"] = context["roles"].filter(area=qufu)
