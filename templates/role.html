@@ -39,7 +39,7 @@
             <option value="{{ value }}">{{ key }}</option>
             {% endfor %}
         </select>
-                <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</lable>
+        <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</lable>
         <select name="sel_value4">
             {% for key,value in select_form.SELVALUE4 %}
             <option value="{{ value }}">{{ key }}</option>
@@ -48,17 +48,24 @@
         <div>
             <label for="id_baoshiLevel">宝石评分</label>
             {{select_form.baoshiLevel}}
-        <label for="id_zhenyuanNum">橙色真元</label>
+            <label for="id_zhenyuanNum">橙色真元</label>
             {{select_form.zhenyuanNum}}
-        <label for="id_tili_d">体力鼎</label>
+            <label for="id_tili_d">体力鼎</label>
             {{select_form.tili_d}}
-        <label for="id_shuxing_d">属性鼎</label>
+            <label for="id_shuxing_d">属性鼎</label>
             {{select_form.shuxing_d}}
+            <label for="id_attack_heightest_value">主属性攻击值</label>
+            {{select_form.attack_heightest_value}}
+            <label for="id_attack_shizhuang_name">时装颜色</label>
+            {{select_form.shizhuang_name}}
+            <label for="id_attack_nb_xinjue_name">秘技名称</label>
+            {{select_form.nb_xinjue_name}}
+                        <label for="id_chonglou_num">重楼数量</label>
+            {{select_form.chonglou_num}}
         </div>
 
         <input type="submit">
     </form>
-    <caption>角色列表</caption>
     <div>小窍门：点击属性字段名称可以实现从高到低排序</div>
     <thead>
     <tr>
@@ -89,6 +96,7 @@
         <td>{{role.hp}}</td>
         <td>{{role.tili}}</td>
         <td>{{role.shenfa}}</td>
+        <td>{{role.attack_all_value}}</td>
         <td>{{role.attack_heightest_name}}</td>
         <td>{{role.attack_heightest_value}}</td>
         <td>{{role.others_attack}}</td>
@@ -114,7 +122,9 @@
         <td>{{role.kang_heightest_name}}</td>
         <td>{{role.kang_heightest_value}}</td>
         <td>{{role.zuoji}}</td>
+        <td>{{role.nb_xinjue_num}}</td>
         <td>{{role.chonglou_num}}</td>
+
     </tr>
     {% empty %}
 

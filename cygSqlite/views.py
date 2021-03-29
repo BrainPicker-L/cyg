@@ -46,9 +46,14 @@ def role(request):
     zhenyuanNum = request.GET.get("zhenyuanNum",0)
     tili_d = request.GET.get("tili_d",0)
     shuxing_d = request.GET.get("shuxing_d",0)
+    attack_heightest_value = request.GET.get("attack_heightest_value", 0)
+    shizhuang_name = request.GET.get('shizhuang_name',"")
+    nb_xinjue_name = request.GET.get('nb_xinjue_name',"")
+    chonglou_num = request.GET.get('chonglou_num', 0)
 
-    sel_value = request.GET.get("sel_value","全部")
+    menpai = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
+
     visitnum,judge = visitNums.objects.get_or_create(name="总搜索次数")
     print(baoshiLevel)
     if not judge:
@@ -59,15 +64,15 @@ def role(request):
 
     qufu = request.GET.get("sel_value3","无区服限制")
 
-    if sel_value == "全部":
-        context["roles"] = Role.objects.all()
+
+    if menpai == "全部":
+        context["roles"] = Role.objects.all()#.exclude(menpai="峨嵋")
     else:
-        context["roles"] = Role.objects.filter(menpai=sel_value)
+        context["roles"] = Role.objects.filter(menpai=menpai)
 
     main_shuxing = request.GET.get("sel_value4", "无主属性限制")
     if main_shuxing != "无主属性限制":
         context["roles"] = context["roles"].filter(attack_heightest_name=main_shuxing)
-
     context["roles"] = context["roles"].filter(level__gte=l_level)
     context["roles"] = context["roles"].filter(level__lte=h_level)
     if baoshiLevel and baoshiLevel != None:
@@ -78,6 +83,14 @@ def role(request):
         context["roles"] = context["roles"].filter(tili_d__gte=tili_d)
     if shuxing_d and shuxing_d !=None:
         context["roles"] = context["roles"].filter(shuxing_d__gte=shuxing_d)
+    if attack_heightest_value and attack_heightest_value != None:
+        context["roles"] = context["roles"].filter(attack_heightest_value__gte=attack_heightest_value)
+    if shizhuang_name and shizhuang_name != None:
+        context["roles"] = context["roles"].filter(shizhuang_name__contains=shizhuang_name)
+    if nb_xinjue_name and nb_xinjue_name != None:
+        context["roles"] = context["roles"].filter(nb_xinjue_name__contains=nb_xinjue_name)
+    if chonglou_num and chonglou_num != None:
+        context["roles"] = context["roles"].filter(chonglou_num__gte=chonglou_num)
 
     if qufu != "无区服限制":
         context["roles"] = context["roles"].filter(area=qufu)
@@ -92,7 +105,7 @@ def role(request):
     print(context["request_url_all"])
     print(verbose_name)
     try:
-        context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:-1]
+        context["verbose_names"] = [name.verbose_name for name in context["roles"][0]._meta.fields][1:-3]
         context["true_names"] = [name.name for name in context["roles"][0]._meta.fields][1:]
         num = context["verbose_names"].index(verbose_name)
         if verbose_name == "稀有坐骑":

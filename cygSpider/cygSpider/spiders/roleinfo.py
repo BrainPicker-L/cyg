@@ -11,7 +11,7 @@ import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8504&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8704&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -97,6 +97,9 @@ class RoleinfoSpider(scrapy.Spider):
         #时装数量统计
         item['shizhuang_num'] = len(re.findall("可永久使用",html))
 
+        # 时装风格
+        item['shizhuang_name'] = ",".join(list(set([i[1] for i in re.findall("#(cbe38ff|B)(.{0,5}风格)",html)])))
+
         #所在区服
         item['area'] = re.findall(r'所在区服：(.*?)&nbsp',html)[0]
 
@@ -164,6 +167,7 @@ class RoleinfoSpider(scrapy.Spider):
         item['attack_heightest_value'] = attack_heightest_value
         item['attack_heightest_name'] = height_shuxing
         item['others_attack'] = sum(shuxing_list)
+        item['attack_all_value'] = item['attack_heightest_value'] + item['others_attack']
         item['attack_stab'] = int(response.xpath('//*[@id="sword"]/div[2]/div/p/text()').extract_first()[6:])
         item['huixin'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[17]/span/text()').extract_first())
         item['mingzhong'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[15]/span/text()').extract_first().replace(" ",""))
@@ -193,6 +197,10 @@ class RoleinfoSpider(scrapy.Spider):
         #体力身法获取
         item["tili"] = int(re.findall(r'<div class="row2">体力：<span class="span">(\d+) <b class="plus">',html)[0])
         item["shenfa"] = int(re.findall(r'<div class="row2">身法：<span class="span">(\d+) <b class="plus">',html)[0])
+
+        # 稀有心决获取
+        item["nb_xinjue_name"] = ",".join(list(set(re.findall(r'("鼎湖龙吟"|"四面楚歌")', html))))
+        item["nb_xinjue_num"] = len(list(set(re.findall(r'("鼎湖龙吟"|"四面楚歌")', html))))
 
         # # 秘技获取
         # item["miji"] = ""

@@ -13,6 +13,7 @@ class Role(models.Model):
     hp = models.IntegerField(verbose_name='血上限')
     tili = models.IntegerField(verbose_name='体力', default=0)
     shenfa = models.IntegerField(verbose_name='身法', default=0)
+    attack_all_value = models.IntegerField(verbose_name='总属性攻击值', default=0)
     attack_heightest_name = models.CharField(verbose_name='最高属性攻击名称', max_length=30)
     attack_heightest_value = models.IntegerField(verbose_name='最高属性攻击值')
     others_attack = models.IntegerField(verbose_name='副属性攻击')
@@ -27,6 +28,7 @@ class Role(models.Model):
     if20 = models.IntegerField(verbose_name="双十珍兽",default=0)
     cailiao_3 = models.IntegerField(verbose_name="三级材料",default=0)
     shizhuang_num = models.IntegerField(verbose_name="时装数量",default=0)
+
     area = models.CharField(verbose_name="区服", max_length=200, default='')
     shenqi_star = models.IntegerField(verbose_name="神器星级",default=0)
     neiwai_max_attack = models.IntegerField(verbose_name="最高内外功",default=0)
@@ -38,9 +40,13 @@ class Role(models.Model):
     kang_heightest_name = models.CharField(verbose_name="最高抗性名称",max_length=30,default="")
     kang_heightest_value = models.IntegerField(verbose_name="最高抗性值",default=0)
     zuoji = models.CharField(verbose_name="稀有坐骑",max_length=200,default='')
+    nb_xinjue_num = models.IntegerField(verbose_name='稀有心决数量',default=0)
 
     chonglou_num = models.IntegerField(verbose_name="重楼个数",default=0)
+    shizhuang_name = models.CharField(verbose_name="时装颜色",max_length=10000, default='')
     zuoji_num = models.IntegerField(verbose_name="稀有坐骑数量", default=0)
+    nb_xinjue_name = models.CharField(verbose_name="稀有心决名称",max_length=10000, default='')
+
 
 
 class visitNums(models.Model):
