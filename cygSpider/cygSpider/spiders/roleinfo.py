@@ -11,7 +11,7 @@ import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?world_id=0&price=100-8704&gem_level=4&gem_num=50&order_by=equip_point-desc&have_chosen=&page_num=1#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling?price=2001-8503&gem_level=5&gem_num=40']
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -106,15 +106,15 @@ class RoleinfoSpider(scrapy.Spider):
         #神器星级
         item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
 
-        #稀有坐骑统计
-        zuoji_list = re.findall(r'"name":"坐骑：(.*?)".*?"guiZhong":(\d).*?"useTimeDesc2":"该物品将在0年0月(\d)日24点消失",',html)
-        zuoji_true = []
-        for zuoji in zuoji_list:
-            if zuoji[1] == "1" and zuoji[2] == "0":
-                zuoji_true.append(zuoji[0])
-        item["zuoji"] = ",".join(zuoji_true)
-        #稀有座机数量
-        item["zuoji_num"] = len(zuoji_true)
+        # #稀有坐骑统计
+        # zuoji_list = re.findall(r'"name":"坐骑：(.*?)".*?"guiZhong":(\d).*?"useTimeDesc2":"该物品将在0年0月(\d)日24点消失",',html)
+        # zuoji_true = []
+        # for zuoji in zuoji_list:
+        #     if zuoji[1] == "1" and zuoji[2] == "0":
+        #         zuoji_true.append(zuoji[0])
+        # item["zuoji"] = ",".join(zuoji_true)
+        # #稀有座机数量
+        # item["zuoji_num"] = len(zuoji_true)
         #重楼数量
         item["chonglou_num"] = len(re.findall(r'"name":"重楼(.+?)"',html))
 
