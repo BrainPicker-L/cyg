@@ -16,6 +16,7 @@ class SelectForm(forms.Form):
         ('慕容', '慕容'),
         ('唐门', '唐门'),
         ('鬼谷', '鬼谷'),
+        ('桃花岛', '桃花岛'),
     )
     SELVALUE2 = (
         ('无等级限制','80-119'),
@@ -66,6 +67,8 @@ class SelectForm(forms.Form):
     chonglou_num = forms.CharField(required=False)
     tili_d = forms.CharField(required=False)
     shuxing_d = forms.CharField(required=False)
+    yigudan = forms.CharField(required=False)
+    kang_heightest_value = forms.CharField(required=False)
     sel_value = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE))
     sel_value2 = forms.CharField(max_length=10, widget=forms.widgets.Select(choices=SELVALUE2))
     sel_value3 = forms.CharField(max_length=15, widget=forms.widgets.Select(choices=SELVALUE3))

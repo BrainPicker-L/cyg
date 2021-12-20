@@ -50,6 +50,8 @@ def role(request):
     shizhuang_name = request.GET.get('shizhuang_name',"")
     nb_xinjue_name = request.GET.get('nb_xinjue_name',"")
     chonglou_num = request.GET.get('chonglou_num', 0)
+    kang_heightest_value = request.GET.get('kang_heightest_value', 0)
+    yigudan  = request.GET.get('yigudan', 0)
 
     menpai = request.GET.get("sel_value","全部")
     verbose_name = request.GET.get("verbose_name","装备评分")
@@ -67,6 +69,7 @@ def role(request):
 
     if menpai == "全部":
         context["roles"] = Role.objects.all()#.exclude(menpai="峨嵋")
+        context["roles"] = Role.objects.all().exclude(cloth_grade__gte=500000)
     else:
         context["roles"] = Role.objects.filter(menpai=menpai)
 
@@ -91,6 +94,11 @@ def role(request):
         context["roles"] = context["roles"].filter(nb_xinjue_name__contains=nb_xinjue_name)
     if chonglou_num and chonglou_num != None:
         context["roles"] = context["roles"].filter(chonglou_num__gte=chonglou_num)
+    if kang_heightest_value and kang_heightest_value != None:
+        context["roles"] = context["roles"].filter(kang_heightest_value__gte=int(kang_heightest_value))
+
+    if yigudan and yigudan != None:
+        context["roles"] = context["roles"].filter(yigudan__gte=int(yigudan))
 
     if qufu != "无区服限制":
         context["roles"] = context["roles"].filter(area=qufu)

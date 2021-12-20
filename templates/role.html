@@ -60,8 +60,12 @@
             {{select_form.shizhuang_name}}
             <label for="id_attack_nb_xinjue_name">秘技名称</label>
             {{select_form.nb_xinjue_name}}
-                        <label for="id_chonglou_num">重楼数量</label>
+            <label for="id_chonglou_num">重楼数量</label>
             {{select_form.chonglou_num}}
+            <label for="id_kang_heightest_value">最高抗性</label>
+            {{select_form.kang_heightest_value}}
+            <label for="id_yigudan">移骨丹</label>
+            {{select_form.yigudan}}
         </div>
 
         <input type="submit">
@@ -124,6 +128,7 @@
         <td>{{role.zuoji}}</td>
         <td>{{role.nb_xinjue_num}}</td>
         <td>{{role.chonglou_num}}</td>
+        <td>{{role.nb_animal_num}}</td>
 
     </tr>
     {% empty %}

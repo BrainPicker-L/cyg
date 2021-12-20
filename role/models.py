@@ -43,9 +43,12 @@ class Role(models.Model):
     nb_xinjue_num = models.IntegerField(verbose_name='稀有心决数量',default=0)
 
     chonglou_num = models.IntegerField(verbose_name="重楼个数",default=0)
+    nb_animal_num = models.IntegerField(verbose_name="强力珍兽数量",default=0)
     shizhuang_name = models.CharField(verbose_name="时装颜色",max_length=10000, default='')
     zuoji_num = models.IntegerField(verbose_name="稀有坐骑数量", default=0)
     nb_xinjue_name = models.CharField(verbose_name="稀有心决名称",max_length=10000, default='')
+    yigudan = models.IntegerField(verbose_name='移骨丹',default=0)
+
 
 
 

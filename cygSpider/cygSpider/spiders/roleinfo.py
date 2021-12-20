@@ -6,12 +6,14 @@ import time
 from role.models import *
 # conda activate cyg_py36
 # python manage.py runserver
-# scrapy crawl roleinfo
+#scrapy crawl roleinfo
 import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
-    start_urls = ['http://tl.cyg.changyou.com/goods/selling?price=2001-8503&gem_level=5&gem_num=40']
+    start_urls = []
+    for start_url in ["public", "selling"]:
+        start_urls.append('http://tl.cyg.changyou.com/goods/%s?gem_level=5&gem_num=40&order_by=baoshi-desc&price=0-15209'%start_url)
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -60,6 +62,26 @@ class RoleinfoSpider(scrapy.Spider):
     def parse_detail(self, response):   #处理详情页
         item = response.meta["item"]
         html = response.body.decode('utf-8')
+
+
+        # 移骨丹判断
+        yigudan = re.findall(r'移骨丹', html)
+        if len(yigudan) != 0:
+            item["yigudan"] = 1
+
+        #  强力珍兽数量计算 成长率+最高资质>= 7000
+        zizhi_list = [int(i) for i in re.findall(r'资质：\S*?span.*?>(\d+)', html)]
+        growrate_list = re.findall(r'成长率：<br>.*growRate="(\d+)"', html)
+        item["nb_animal_num"] = 0
+        for i in range(0, len(zizhi_list), 5):
+            try:
+                biggest_zizhi = max(zizhi_list[i:i+5][:2])
+                growrate = int(growrate_list[int(i/5)])
+                if biggest_zizhi + growrate >=7000:
+                    item["nb_animal_num"] += 1
+            except:
+                pass
+
 
 
 
@@ -130,6 +152,8 @@ class RoleinfoSpider(scrapy.Spider):
         item['name'] = response.xpath("//*[@id='goods-detail']/div/div[2]/div/div[1]/span/text()").extract_first()
         item['menpai'] = response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[28]/text()').extract_first()[3:]
         item['cloth_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[1]').extract_first()[5:])
+        if item['price']/item['cloth_grade'] < 0.01 or (int(item['price']) < 6000 and int(item['cloth_grade'])>400000 ) or int(item['cloth_grade'])>500000:
+            return
         item['stone_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[4]/div[1]/div/div[6]/span/text()').extract_first())
         item['level'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[2]').extract_first()[3:])
         item['hp'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[3]/span/i/text()').extract_first())
@@ -162,7 +186,16 @@ class RoleinfoSpider(scrapy.Spider):
         elif kang_pos == 3:
             height_kang = '毒抗'
 
-        item['kang_heightest_value'] = kang_max
+        wanbao_list = response.xpath(r'//script[contains(@id,"gt_")]//text()')
+        wanbao_value = 0
+        for wanbao in wanbao_list:
+            value_list = re.findall('.抗性 \+(\d+)', wanbao.extract())
+            if len(value_list) == 0:
+                continue
+            wanbao_value += int(value_list[0])
+
+
+        item['kang_heightest_value'] = kang_max + wanbao_value
         item['kang_heightest_name'] = height_kang
         item['attack_heightest_value'] = attack_heightest_value
         item['attack_heightest_name'] = height_shuxing
