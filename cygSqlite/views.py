@@ -76,7 +76,7 @@ def role(request):
     main_shuxing = request.GET.get("sel_value4", "无主属性限制")
     if main_shuxing != "无主属性限制":
         context["roles"] = context["roles"].filter(attack_heightest_name=main_shuxing)
-    context["roles"] = context["roles"].filter(level__gte=l_level)
+    context["roles"] = context["roles"].filter(level__gte=l_level).exclude(menpai="峨嵋")
     context["roles"] = context["roles"].filter(level__lte=h_level)
     if baoshiLevel and baoshiLevel != None:
         context["roles"] = context["roles"].filter(stone_grade__gte=baoshiLevel)

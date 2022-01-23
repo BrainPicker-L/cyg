@@ -6,14 +6,14 @@ import time
 from role.models import *
 # conda activate cyg_py36
 # python manage.py runserver
-#scrapy crawl roleinfo
+# scrapy crawl roleinfo
 import json
 class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
     start_urls = []
     for start_url in ["public", "selling"]:
-        start_urls.append('http://tl.cyg.changyou.com/goods/%s?gem_level=5&gem_num=40&order_by=baoshi-desc&price=0-15209'%start_url)
+        start_urls.append('http://tl.cyg.changyou.com/goods/{}?gem_level=5&gem_num=30&order_by=baoshi-desc&price=10-9999&have_chosen=gem_level*5%20price*10-9999'.format(start_url))
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -126,7 +126,10 @@ class RoleinfoSpider(scrapy.Spider):
         item['area'] = re.findall(r'所在区服：(.*?)&nbsp',html)[0]
 
         #神器星级
-        item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
+        try:
+            item['shenqi_star'] = max(list(map(int,re.findall(r'"icon":"Shenqi.*?"xingJi":(\d),',html))))
+        except:
+            item['shenqi_star'] = 9
 
         # #稀有坐骑统计
         # zuoji_list = re.findall(r'"name":"坐骑：(.*?)".*?"guiZhong":(\d).*?"useTimeDesc2":"该物品将在0年0月(\d)日24点消失",',html)
@@ -140,8 +143,8 @@ class RoleinfoSpider(scrapy.Spider):
         #重楼数量
         item["chonglou_num"] = len(re.findall(r'"name":"重楼(.+?)"',html))
 
-        wai_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[11]/span/text()').extract_first().replace(" ", ""))
-        nei_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[12]/span/text()').extract_first().replace(" ", ""))
+        wai_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[10]/span/text()').extract_first().replace(" ", ""))
+        nei_attack = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[11]/span/text()').extract_first().replace(" ", ""))
         item["neiwai_max_attack"] = max(wai_attack, nei_attack)
 
 
@@ -156,7 +159,7 @@ class RoleinfoSpider(scrapy.Spider):
             return
         item['stone_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[4]/div[1]/div/div[6]/span/text()').extract_first())
         item['level'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[2]').extract_first()[3:])
-        item['hp'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[3]/span/i/text()').extract_first())
+        item['hp'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[2]/span/i/text()').extract_first())
         bing = int(response.xpath('//*[@id="bing"]/div[2]/div/p[1]/text()').extract_first()[5:])
         huo = int(response.xpath('//*[@id="huo"]/div[2]/div/p[1]/text()').extract_first()[5:])
         xuan = int(response.xpath('//*[@id="xuan"]/div[2]/div/p[1]/text()').extract_first()[5:])
@@ -203,8 +206,8 @@ class RoleinfoSpider(scrapy.Spider):
         item['attack_all_value'] = item['attack_heightest_value'] + item['others_attack']
         item['attack_stab'] = int(response.xpath('//*[@id="sword"]/div[2]/div/p/text()').extract_first()[6:])
         item['huixin'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[17]/span/text()').extract_first())
-        item['mingzhong'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[15]/span/text()').extract_first().replace(" ",""))
-        item['shanbi'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[16]/span/text()').extract_first().replace(" ",""))
+        item['mingzhong'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[14]/span/text()').extract_first().replace(" ",""))
+        item['shanbi'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[15]/span/text()').extract_first().replace(" ",""))
         item['tili_d'] = re.findall('<p>体力：\+\r\n\d*',html)[0].split("\n")[1]
 
         # 寻找属性鼎
