@@ -1,0 +1,5 @@
+HOST = "127.0.0.1"
+PORT = "3306"
+PASSWORD = "lzz804456852"
+DB_NAME = "cyg_db"
+USER = "root"

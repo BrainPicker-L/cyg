@@ -8,11 +8,6 @@ build/
 
 *.__pycache__/
 db.sqlite3
-*.migrations/
 .scrapy/
-role/migrations/
-gunicorn/
-cygSqlite/settings.py
-user/migrations/
-cygSpider/conf.py
+
 conda
