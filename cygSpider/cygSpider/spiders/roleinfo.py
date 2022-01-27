@@ -13,7 +13,7 @@ class RoleinfoSpider(scrapy.Spider):
     allowed_domains = ['changyou.com']
     start_urls = []
     for start_url in ["public", "selling"]:
-        start_urls.append('http://tl.cyg.changyou.com/goods/{}?gem_level=5&gem_num=30&order_by=baoshi-desc&price=10-9999&have_chosen=gem_level*5%20price*10-9999'.format(start_url))
+        start_urls.append('http://tl.cyg.changyou.com/goods/{}?world_id=0&price=10-18888&gem_level=5&gem_num=40&order_by=baoshi-desc&have_chosen=&page_num=1#goodsTag'.format(start_url))
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
