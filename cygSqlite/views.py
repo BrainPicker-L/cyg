@@ -69,7 +69,7 @@ def role(request):
 
     if menpai == "全部":
         context["roles"] = Role.objects.all()#.exclude(menpai="峨嵋")
-        context["roles"] = Role.objects.all().exclude(cloth_grade__gte=500000)
+        context["roles"] = Role.objects.all()
     else:
         context["roles"] = Role.objects.filter(menpai=menpai)
 

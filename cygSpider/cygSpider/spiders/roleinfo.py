@@ -12,8 +12,8 @@ class RoleinfoSpider(scrapy.Spider):
     name = 'roleinfo'
     allowed_domains = ['changyou.com']
     start_urls = []
-    for start_url in ["public", "selling"]:
-        start_urls.append('http://tl.cyg.changyou.com/goods/{}?world_id=0&price=10-18888&gem_level=5&gem_num=40&order_by=baoshi-desc&have_chosen=&page_num=1#goodsTag'.format(start_url))
+    for start_url in ["selling"]: # "public",
+        start_urls.append('http://tl.cyg.changyou.com/goods/{}?world_id=0&price=10-36289&gem_level=5&gem_num=40&order_by=baoshi-desc&have_chosen=&page_num=1#goodsTag'.format(start_url))
     def parse(self, response):
         li_list = response.xpath("//ul[@class='pg-goods-list']/li")
         hours_now = int(time.strftime('%H',time.localtime(time.time())))
@@ -155,8 +155,8 @@ class RoleinfoSpider(scrapy.Spider):
         item['name'] = response.xpath("//*[@id='goods-detail']/div/div[2]/div/div[1]/span/text()").extract_first()
         item['menpai'] = response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[28]/text()').extract_first()[3:]
         item['cloth_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[1]').extract_first()[5:])
-        if item['price']/item['cloth_grade'] < 0.01 or (int(item['price']) < 6000 and int(item['cloth_grade'])>400000 ) or int(item['cloth_grade'])>500000:
-            return
+        # if item['price']/item['cloth_grade'] < 0.01 or (int(item['price']) < 6000 and int(item['cloth_grade'])>400000 ) or int(item['cloth_grade'])>500000:
+        #     return
         item['stone_grade'] = int(response.xpath('//*[@id="goods-detail"]/div/div[4]/div[1]/div/div[6]/span/text()').extract_first())
         item['level'] = int(response.xpath('//*[@id="goods-detail"]/div/div[1]/div/span[27]/text()[2]').extract_first()[3:])
         item['hp'] = int(response.xpath('//*[@id="goods-detail"]/div/div[2]/div/div[2]/span/i/text()').extract_first())
